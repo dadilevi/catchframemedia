@@ -176,6 +176,7 @@ footer .wrap{padding-top:28px;padding-bottom:28px;display:flex;flex-wrap:wrap;al
 .dialog{width:100%;max-width:1000px;max-height:94vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:28px;animation:pop .3s ease both}
 @keyframes pop{from{opacity:0;transform:translateY(12px) scale(.98)}}
 .player{position:relative;aspect-ratio:16/9;background:#000;border-radius:28px 28px 0 0;overflow:hidden}
+.player video{position:absolute;inset:0;width:100%;height:100%;background:#000}
 .player iframe,.player img{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
 .player.vertical{aspect-ratio:9/16;width:min(100%,calc(78vh*9/16));margin:0 auto;border-radius:28px 28px 0 0}
 .tt-cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;padding:20px 24px;text-align:center;background:radial-gradient(circle at 50% 40%,#2a2410,#0B0B0D 70%)}
@@ -416,6 +417,8 @@ form{padding:24px}
 var D={school:'סרטון אנימציית AI שמציג את הייחודיות של בית הספר באופן בלתי נשכח. כי בכל בית ספר מסתתר סיפור, ואנחנו כאן כדי להאיר אותו.',np:'סרטון AI שהופך את העשייה של הארגון לחוויה מרגשת ומעוררת השראה, ומספר אותה בשפה שהקהל מתחבר אליה.',ev:'סרטון AI אישי שהופך רגע חגיגי לסרט מושלם עבור האנשים שאתם אוהבים.',biz:'סרטון שיווקי מקורי שמספר את הסיפור של העסק ומייצר תוכן שעובד ברשתות ובפרסום.'};
 var T={school:'בתי ספר וחינוך',np:'עמותות ופרויקטים',ev:'אירועים ואנשים',biz:'עסקים'};
 var P=[
+{c:'school',n:'סרטוני AI לבתי ספר: במקום עוד מצגת',mp4:'video/schools-promo.mp4',img:'img/schools_promo.jpg',alt:'נירית מסבירה על סרטוני AI לבתי ספר, לצד סצנה מונפשת של ילדים מבשלים בכיתה'},
+{c:'school',n:'בית ספר העומר: חיבוק לקהילה בימי המלחמה',mp4:'video/omer.mp4',img:'img/omer.jpg',vert:true,alt:'דמות פרוותית צבעונית ושמחה על רקע אורות'},
 {c:'school',n:'בית ספר כנפי אבירים, יבנה',v:'llEfuPIRctU'},
 {c:'ev',n:'החתונה של כרמל ויגאל',v:'Ild9A0ipYYg'},
 {c:'school',n:'בית ספר ניל"י, זכרון יעקב: 140 שנה',v:'M6XtYe8n5j0'},
@@ -440,9 +443,9 @@ var src=p.img||(p.v?'https://i.ytimg.com/vi/'+p.v+'/'+(p.thumb||'hqdefault')+'.j
 var alt=p.alt||('פריים מתוך הסרטון: '+p.n);
 var b=document.createElement('button');
 b.type='button';b.className='tile';b.dataset.c=p.c;b.dataset.i=i;
-b.setAttribute('aria-label',((p.v||p.tt)?'צפייה בסרטון: ':'פרטים על: ')+p.n);
+b.setAttribute('aria-label',((p.v||p.tt||p.mp4)?'צפייה בסרטון: ':'פרטים על: ')+p.n);
 var media=src?'<img src="'+src+'" alt="'+esc(alt)+'" loading="lazy">':'<span class="tt-cover"><span class="tt-label">TikTok</span><span class="tt-name">'+esc(p.n)+'</span></span>';
-b.innerHTML='<span class="cover">'+media+((p.v||p.tt)?playIco:'')+corners+'</span><span class="meta"><span class="t">'+T[p.c]+'</span><span class="n">'+esc(p.n)+'</span></span>';
+b.innerHTML='<span class="cover">'+media+((p.v||p.tt||p.mp4)?playIco:'')+corners+'</span><span class="meta"><span class="t">'+T[p.c]+'</span><span class="n">'+esc(p.n)+'</span></span>';
 grid.appendChild(b);
 });
 var tabs=document.querySelectorAll('.tabs button');
@@ -454,9 +457,10 @@ document.querySelectorAll('[data-goto]').forEach(function(a){a.addEventListener(
 var modal=document.getElementById('modal'),player=document.getElementById('player'),closeBtn=document.getElementById('mClose'),lastFocus=null;
 function openModal(o){
 lastFocus=document.activeElement;
-player.querySelectorAll('iframe,img').forEach(function(e){e.remove()});
-player.classList.toggle('vertical',!!o.tt);
-if(o.tt){var g=document.createElement('iframe');g.src='https://www.tiktok.com/player/v1/'+o.tt+'?autoplay=1&music_info=0&description=0&rel=0';g.title=o.n;g.allow='autoplay; encrypted-media; fullscreen';g.allowFullscreen=true;player.insertBefore(g,closeBtn);}
+player.querySelectorAll('iframe,img,video').forEach(function(e){e.remove()});
+player.classList.toggle('vertical',!!(o.tt||o.vert));
+if(o.mp4){var vd=document.createElement('video');vd.src=o.mp4;vd.controls=true;vd.autoplay=true;vd.playsInline=true;if(o.img)vd.poster=o.img;player.insertBefore(vd,closeBtn);}
+else if(o.tt){var g=document.createElement('iframe');g.src='https://www.tiktok.com/player/v1/'+o.tt+'?autoplay=1&music_info=0&description=0&rel=0';g.title=o.n;g.allow='autoplay; encrypted-media; fullscreen';g.allowFullscreen=true;player.insertBefore(g,closeBtn);}
 else if(o.v){var f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+o.v+'?autoplay=1&rel=0&modestbranding=1';f.title=o.n;f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;player.insertBefore(f,closeBtn);}
 else{var im=document.createElement('img');im.src=o.img;im.alt=o.alt||'';player.insertBefore(im,closeBtn);}
 document.getElementById('mType').textContent=o.type;
@@ -464,11 +468,12 @@ document.getElementById('mTitle').textContent=o.n;
 document.getElementById('mDesc').textContent=o.desc;
 var yt=document.getElementById('mYt');
 if(o.tt){yt.href='https://www.tiktok.com/@catchframemedia/video/'+o.tt;yt.textContent='לצפייה בטיקטוק';}
+else if(o.mp4){yt.href='https://www.youtube.com/@catchframemedia';yt.textContent='לכל הסרטונים ביוטיוב';}
 else{yt.href=o.v?'https://www.youtube.com/watch?v='+o.v:'https://www.youtube.com/@catchframemedia';yt.textContent=o.v?'לצפייה ביוטיוב':'לכל הסרטונים ביוטיוב';}
 modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';closeBtn.focus();
 }
-function closeModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';player.querySelectorAll('iframe,img').forEach(function(e){e.remove()});if(lastFocus)lastFocus.focus();}
-grid.addEventListener('click',function(e){var t=e.target.closest('.tile');if(!t)return;var p=P[+t.dataset.i];openModal({v:p.v,tt:p.tt,img:p.img,alt:p.alt,n:p.n,type:T[p.c],desc:D[p.c]})});
+function closeModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';player.querySelectorAll('iframe,img,video').forEach(function(e){e.remove()});if(lastFocus)lastFocus.focus();}
+grid.addEventListener('click',function(e){var t=e.target.closest('.tile');if(!t)return;var p=P[+t.dataset.i];openModal({v:p.v,tt:p.tt,mp4:p.mp4,vert:p.vert,img:p.img,alt:p.alt,n:p.n,type:T[p.c],desc:D[p.c]})});
 document.querySelectorAll('[data-video]').forEach(function(b){b.addEventListener('click',function(){openModal({v:b.dataset.video,n:b.dataset.title,type:b.dataset.type,desc:b.dataset.desc})})});
 closeBtn.addEventListener('click',closeModal);
 modal.addEventListener('click',function(e){if(e.target===modal)closeModal()});
