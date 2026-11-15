@@ -66,8 +66,9 @@ header{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1p
 .sub{color:var(--muted);max-width:540px}
 .hero-media{flex:1 1 460px;min-width:0;display:flex;justify-content:center;padding:40px 0 56px}
 .frame{position:relative;width:100%;max-width:580px;padding:22px;background:radial-gradient(closest-side,rgba(201,174,90,.16),rgba(201,174,90,0))}
-.reel{position:relative;aspect-ratio:5/4;border-radius:28px;overflow:hidden;background:#111}
-.reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s ease}
+.reel{position:relative;aspect-ratio:1/1;border-radius:28px;overflow:hidden;background:#111}
+.reel img,.reel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s ease}
+.reel video.on{opacity:1}
 .reel img.on{opacity:1;animation:kb 6s ease-out both}
 @keyframes kb{from{transform:scale(1.08)}to{transform:scale(1)}}
 .reel-bar{position:absolute;bottom:0;right:0;left:0;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(to top,rgba(0,0,0,.75),rgba(0,0,0,0));font-size:15px;font-weight:500}
@@ -231,7 +232,7 @@ form{padding:24px}
 <div class="hero-media">
 <div class="frame">
 <div class="reel" role="img" aria-label="פריימים מתוך עבודות נבחרות">
-<img class="on" src="img/hero_kid.jpg" alt="" data-t="We catch your frame">
+<video class="on" src="video/logo-intro.mp4" poster="img/logo_intro_end.jpg" muted playsinline preload="auto" data-t="We catch your frame" aria-hidden="true"></video>
 <img src="img/school_knafei.jpg" alt="" data-t="בית ספר כנפי אבירים, יבנה" loading="lazy">
 <img src="img/ev_wedding.jpg" alt="" data-t="החתונה של כרמל ויגאל" loading="lazy">
 <img src="img/ev_70.jpg" alt="" data-t="התאומים שרף, יום הולדת 70" loading="lazy">
@@ -481,11 +482,11 @@ document.getElementById('mCta').addEventListener('click',closeModal);
 modal.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal()});
 
 /* reel */
-var imgs=[].slice.call(document.querySelectorAll('.reel img')),dots=document.getElementById('dots'),title=document.getElementById('reelTitle'),idx=0,timer=null;
+var imgs=[].slice.call(document.querySelectorAll('.reel img, .reel video')),dots=document.getElementById('dots'),title=document.getElementById('reelTitle'),idx=0,timer=null;
 var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 imgs.forEach(function(im,i){var d=document.createElement('button');d.type='button';d.setAttribute('aria-label','מעבר לפריים '+(i+1));d.addEventListener('click',function(){show(i);restart()});dots.appendChild(d)});
-function show(i){idx=i;imgs.forEach(function(im,j){im.classList.toggle('on',j===i)});[].forEach.call(dots.children,function(d,j){d.setAttribute('aria-current',j===i?'true':'false')});title.textContent=imgs[i].dataset.t;}
-function restart(){if(reduce)return;clearInterval(timer);timer=setInterval(function(){show((idx+1)%imgs.length)},4500)}
+function show(i){idx=i;imgs.forEach(function(im,j){im.classList.toggle('on',j===i);if(im.tagName==='VIDEO'){if(j===i&&!reduce){try{im.currentTime=0;var pr=im.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}}else{im.pause()}}});[].forEach.call(dots.children,function(d,j){d.setAttribute('aria-current',j===i?'true':'false')});title.textContent=imgs[i].dataset.t;}
+function restart(){if(reduce)return;clearTimeout(timer);var cur=imgs[idx];var next=function(){show((idx+1)%imgs.length);restart()};if(cur.tagName==='VIDEO'){var done=false;var go=function(){if(done)return;done=true;cur.removeEventListener('ended',go);clearTimeout(timer);timer=setTimeout(next,1800)};cur.addEventListener('ended',go);timer=setTimeout(go,8000)}else{timer=setTimeout(next,4500)}}
 show(0);restart();
 
 /* form -> WhatsApp */
