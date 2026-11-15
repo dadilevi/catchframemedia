@@ -154,6 +154,9 @@ details p{margin:10px 0 6px;color:var(--muted)}
 /* contact */
 .contact{display:flex;flex-wrap:wrap;gap:56px}
 .contact .info{flex:1 1 400px;min-width:0;gap:18px}
+.outro{width:240px;max-width:60%;padding:14px;margin-bottom:8px;background:none}
+.outro video{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:20px;background:#111}
+.outro .c{width:30px;height:30px;animation:none}
 .contact h2{font-weight:800;font-size:clamp(36px,5vw,62px);line-height:1.08}
 .contact .info>p{color:var(--muted);font-size:20px}
 .contact-lines a{color:var(--text);text-decoration:none;align-self:flex-start}
@@ -360,6 +363,7 @@ form{padding:24px}
 <section id="contact" class="sec black">
 <div class="wrap contact">
 <div class="info stack">
+<div class="outro frame" aria-hidden="true"><video id="outroVid" src="video/logo-intro.mp4" poster="img/logo_intro_end.jpg" muted playsinline preload="none"></video><span class="c tl"></span><span class="c tr"></span><span class="c bl"></span><span class="c br"></span></div>
 <h2>יש לכם סיפור? בואו נמסגר אותו.</h2>
 <p>ספרו לנו בכמה מילים מה אתם צריכים, ונחזור אליכם.</p>
 <a href="https://wa.me/972528777496" class="btn btn-gold" style="align-self:flex-start;font-size:20px;min-height:56px;margin-top:6px" target="_blank" rel="noopener"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg>כתבו לנו ב-WhatsApp</a>
@@ -488,6 +492,9 @@ imgs.forEach(function(im,i){var d=document.createElement('button');d.type='butto
 function show(i){idx=i;imgs.forEach(function(im,j){im.classList.toggle('on',j===i);if(im.tagName==='VIDEO'){if(j===i&&!reduce){try{im.currentTime=0;var pr=im.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}}else{im.pause()}}});[].forEach.call(dots.children,function(d,j){d.setAttribute('aria-current',j===i?'true':'false')});title.textContent=imgs[i].dataset.t;}
 function restart(){if(reduce)return;clearTimeout(timer);var cur=imgs[idx];var next=function(){show((idx+1)%imgs.length);restart()};if(cur.tagName==='VIDEO'){var done=false;var go=function(){if(done)return;done=true;cur.removeEventListener('ended',go);clearTimeout(timer);timer=setTimeout(next,1800)};cur.addEventListener('ended',go);timer=setTimeout(go,8000)}else{timer=setTimeout(next,4500)}}
 show(0);restart();
+
+/* outro: play the logo animation once when the contact section comes into view */
+(function(){var ov=document.getElementById('outroVid');if(!ov||reduce||!('IntersectionObserver' in window))return;var played=false;var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&!played){played=true;ov.preload='auto';try{ov.currentTime=0;var pr=ov.play();if(pr&&pr.catch)pr.catch(function(){})}catch(x){}io.disconnect();}})},{threshold:0.6});io.observe(ov);})();
 
 /* form -> WhatsApp */
 var form=document.getElementById('leadForm'),err=document.getElementById('formErr'),ok=document.getElementById('formOk');
