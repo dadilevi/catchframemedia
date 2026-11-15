@@ -220,7 +220,7 @@ form{padding:24px}
 <p class="sub">סרטונים מבוססי AI לעסקים, אירועים, בתי ספר ועמותות. מהרעיון והתסריט ועד לסרטון המוגמר.</p>
 <div class="btn-row" style="margin-top:6px">
 <a href="#work" class="btn btn-gold">צפו בעבודות</a>
-<button type="button" class="btn btn-ghost" data-video="-D0cy841_f0" data-title="שואוריל CatchFrame Media" data-type="קליפ אנימציה AI" data-desc="טעימה מהעבודות שלנו לבתי ספר ולעסקים."><svg width="14" height="14" viewBox="0 0 16 16" fill="#C9AE5A" aria-hidden="true"><path d="M4.5 2.5l9 5.5-9 5.5z"/></svg>צפו בשואוריל</button>
+<button type="button" class="btn btn-ghost" data-video="-D0cy841_f0" data-title="CatchFrame Media Showreel" data-type="קליפ אנימציה AI" data-desc="טעימה מהעבודות שלנו לבתי ספר ולעסקים."><svg width="14" height="14" viewBox="0 0 16 16" fill="#C9AE5A" aria-hidden="true"><path d="M4.5 2.5l9 5.5-9 5.5z"/></svg><span dir="ltr">Watch Showreel</span></button>
 </div>
 </div>
 <div class="hero-media">
@@ -423,7 +423,7 @@ var P=[
 {c:'np',n:'האקדמית גורדון',img:'img/np_gordon.jpg',alt:'שני צעירים מאוירים ברכבל מעל העיר'},
 {c:'ev',n:'סרטון לבר מצווה',v:'nD0N-Rh4nMY'},
 {c:'biz',n:'KM Motors, חדרה',v:'EAkBm2lWV_k'},
-{c:'np',n:'פרויקט סאנשיין',img:'img/np_sunshine.jpg',alt:'ילדים מול קופסה צהובה עם הלוגו של פרויקט סאנשיין'},
+{c:'np',n:'פרויקט סאנשיין',v:'a2hfco_y4vE',img:'img/np_sunshine.jpg',alt:'ילדים מול קופסה צהובה עם הלוגו של פרויקט סאנשיין'},
 {c:'school',n:'בית ספר ירושלים, קריית אתא',img:'img/school_yerushalayim.jpg',alt:'מורה ותלמידים מאוירים ליד לוח בכיתה'},
 {c:'np',n:'המכון הישראלי לחדשנות בחינוך',img:'img/np_mie.jpg',alt:'כיתת מחשבים עם זרוע רובוטית על המסך'}
 ];
@@ -432,7 +432,7 @@ var corners='<span class="c tl" aria-hidden="true"></span><span class="c tr" ari
 var playIco='<span class="play"><span><svg width="20" height="20" viewBox="0 0 16 16" fill="#F7F5F0" aria-hidden="true"><path d="M4.5 2.5l9 5.5-9 5.5z"/></svg></span></span>';
 function esc(s){return s.replace(/[&<>"]/g,function(m){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]})}
 P.forEach(function(p,i){
-var src=p.v?'https://i.ytimg.com/vi/'+p.v+'/hqdefault.jpg':p.img;
+var src=p.img||'https://i.ytimg.com/vi/'+p.v+'/hqdefault.jpg';
 var alt=p.alt||('פריים מתוך הסרטון: '+p.n);
 var b=document.createElement('button');
 b.type='button';b.className='tile';b.dataset.c=p.c;b.dataset.i=i;
