@@ -1,6 +1,6 @@
 # CatchFrame Media
 
-> סטודיו לסרטוני AI, תסריטים וסיפורים ויזואליים. יוצרים סרטונים לבתי ספר, עמותות, אירועים אישיים ועסקים, מהרעיון והתסריט ועד לסרטון המוגמר. את הסטודיו מובילה נירית אלקובי, יוצרת וידאו ותסריטאית.
+> סרטוני AI שמספרים את הסיפור שלכם: לבתי ספר, עמותות, אירועים אישיים ועסקים, מהרעיון ועד הסרטון המוכן. את הסטודיו מובילה נירית אלקובי, יוצרת וידאו ותסריטאית.
 > CatchFrame Media is an Israeli studio for AI-generated videos built around storytelling: for schools, non-profits, personal events and businesses, from idea and script to the finished video. Led by Nirit Elkobi, video creator and scriptwriter.
 
 ## מה אנחנו עושים
