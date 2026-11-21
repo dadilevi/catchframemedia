@@ -1,6 +1,14 @@
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
+<!-- Google tag -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-MCX7GZDL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CatchFrame Media | סרטוני AI לבתי ספר, עמותות, אירועים ועסקים</title>
@@ -518,10 +526,16 @@ var n=form.name.value.trim(),ph=form.phone.value.trim(),ty=form.type.value,m=for
 if(!n||!ph){err.hidden=false;ok.hidden=true;(n?form.phone:form.name).focus();return;}
 err.hidden=true;
 var text='היי נירית, הגעתי מהאתר.\nשם: '+n+'\nטלפון: '+ph+'\nסוג הפרויקט: '+ty+(m?'\nעל הפרויקט: '+m:'');
-window.open('https://wa.me/972528777496?text='+encodeURIComponent(text),'_blank','noopener');
+if(window.gtag)gtag('event','generate_lead',{method:'whatsapp_form'});window.open('https://wa.me/972528777496?text='+encodeURIComponent(text),'_blank','noopener');
 ok.hidden=false;
 });
 })();
+</script>
+<script>
+document.addEventListener('click',function(e){var a=e.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';
+if(h.indexOf('wa.me')>-1)gtag('event','generate_lead',{method:'whatsapp'});
+else if(h.indexOf('mailto:')===0)gtag('event','generate_lead',{method:'email'});
+else if(h.indexOf('tel:')===0)gtag('event','generate_lead',{method:'phone'});});
 </script>
 </body>
 </html>
